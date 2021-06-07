@@ -134,16 +134,17 @@ def build_youtube_dl_cmd(url):
         cmd.extend(["-o", "./downfolder/.incomplete/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s"])
     else:
         cmd.extend(["-o", "./downfolder/.incomplete/%(title)s.%(ext)s"])
+
     if (url[2] == "best"):
         cmd.extend(["-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--merge-output-format", "mp4", url[0]])
-    # url[2] == "audio" for download_rest()
     elif (url[2] == "audio-m4a" or url[2] == "audio"):
         cmd.extend(["-f", "bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/", url[0]])
     elif (url[2] == "audio-mp3"):
-        cmd.extend(["-f", "bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", url[0]]
+        cmd.extend(["-f", "bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", url[0]])
     else:
         resolution = url[2][:-1]
         cmd.extend(["-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", url[0]])
+
     print (" ".join(cmd))
     return cmd
 
