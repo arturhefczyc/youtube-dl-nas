@@ -187,21 +187,21 @@ Thr.dl_thread.start()
 with open('Auth.json') as env_file:
     data = json.load(env_file)  # Auth info, when docker run making file
 
-if (data['APP_PORT'] !=''):
+if data['APP_PORT'] != '':
     port = data['APP_PORT']
-if (data['PROXY'] !=''):
+if data['PROXY'] != '':
     proxy = data['PROXY']
-if (data['RATE'] !=''):
+if data['RATE'] != '':
     rate = data['RATE']
-if (data['MIN_SLEEP'] !=''):
+if data['MIN_SLEEP'] != '':
     min_sleep = data['MIN_SLEEP']
-if (data['MAX_SLEEP'] !=''):
+if data['MAX_SLEEP'] != '':
     max_sleep = data['MAX_SLEEP']
-if (data['RM_CACHE_DIR'] =='true' or data['RM_CACHE_DIR'] =='yes'):
+if data['RM_CACHE_DIR'] == 'true' or data['RM_CACHE_DIR'] == 'yes':
     rm_cache_dir = "--rm-cache-dir"
 else:
     rm_cache_dir = ""
-if (data['PLAYLIST'] =='true' or data['PLAYLIST'] =='yes'):
+if data['PLAYLIST'] == 'true' or data['PLAYLIST'] == 'yes':
     playlist = True
 else:
     playlist = False
