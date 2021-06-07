@@ -2,7 +2,7 @@
 # https://github.com/hyeonsangjeon/youtube-dl-nas.git
 
 FROM python:3-onbuild
-LABEL maintainer="wingnut0310 <wingnut0310@gmail.com>"
+LABEL maintainer="https://github.com/arturhefczyc"
 
 # Install ffmpeg.
 #https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository
