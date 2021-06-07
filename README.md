@@ -2,9 +2,19 @@
 ![Docker Pulls Shield](https://img.shields.io/docker/pulls/modenaf360/youtube-dl-nas.svg?style=flat-square)
 # youtube-dl-nas
 
-simple youtube download micro web queue server. 
+Simple youtube download micro web queue server. 
 To prevent a queue attack when using NAS as a server, a making account was created when creating a docker container, and a new UI was added.
 This Queue server based on python3 and debian Linux.
+
+It is a modified versiob based on: https://github.com/hyeonsangjeon/youtube-dl-nas
+
+Changes in this version are mainly related to youtube-dl configuration through Docker ENV variables. Following new variables have been added:
+* RATE - set a custom max download rate, default: '10M'
+* MIN_SLEEP - minimum numbers of second to sleep between downloading next file, applies to playlist download, default: '5'
+* MAX_SLEEP - maximum numbers of seconds to sleep between downloading next file, applies to playlist download, default: '30'
+* RM_CACHE_DIR - in case of download problems, you may want to clear cache before each download, set to 'true' or 'yes' to activate, default: 'false'
+* PLAYLIST - if set to 'yes' or 'true' files will be stored in subfolders named after playlist name or 'NA' if the files are not part of a playlist
+
 https://hub.docker.com/r/modenaf360/youtube-dl-nas/
 
 - web server : [`bottle`](https://github.com/bottlepy/bottle) 
