@@ -20,7 +20,8 @@ proxy = ""
 rate = "10M"
 min_sleep = "5"
 max_sleep = "30"
-rm_cache_dir = "--rm-cache-dir"
+rm_cache_dir = ""
+playlist = true
 
 @get('/')
 def dl_queue_list():
@@ -127,17 +128,22 @@ def dl_worker():
 
 
 def build_youtube_dl_cmd(url):
-    cmd = ["youtube-dl", "--proxy", proxy, rm_cache_dir, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f"]
+    cmd = ["youtube-dl", "--proxy", proxy, rm_cache_dir, "--sleep-interval", min_sleep, "--max-sleep-interval", max_sleep, 
+           "--exec", "touch {} && mv {} ./downfolder/"]
+    if playlist:
+        cmd.extend(["-o", "./downfolder/.incomplete/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s"])
+    else:
+        cmd.extend(["-o", "./downfolder/.incomplete/%(title)s.%(ext)s"])
     if (url[2] == "best"):
-        cmd.extend(["bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--exec", "touch {} && mv {} ./downfolder/", "--merge-output-format", "mp4", url[0]])
+        cmd.extend(["-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--merge-output-format", "mp4", url[0]])
     # url[2] == "audio" for download_rest()
     elif (url[2] == "audio-m4a" or url[2] == "audio"):
-        cmd.extend(["bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/", url[0]])
+        cmd.extend(["-f", "bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/", url[0]])
     elif (url[2] == "audio-mp3"):
-        cmd.extend(["bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", "--exec", "touch {} && mv {} ./downfolder/", url[0]]
+        cmd.extend(["-f", "bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", url[0]]
     else:
         resolution = url[2][:-1]
-        cmd.extend(["bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/",  url[0]]
+        cmd.extend(["-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", url[0]]
     print (" ".join(cmd))
     return cmd
 
@@ -190,10 +196,15 @@ if (data['MIN_SLEEP'] !=''):
     min_sleep = data['MIN_SLEEP']
 if (data['MAX_SLEEP'] !=''):
     max_sleep = data['MAX_SLEEP']
-if (data['RM_CACHE_DIR'] =='true' || data['RM_CACHE_DIR'] =='yes'):
+if (data['RM_CACHE_DIR'] =='true' or data['RM_CACHE_DIR'] =='yes'):
     rm_cache_dir = "--rm-cache-dir"
 else:
     rm_cache_dir = ""
+if (data['PLAYLIST'] =='true' or data['PLAYLIST'] =='yes'):
+    playlist = true
+else:
+    playlist = false
+
 
 run(host='0.0.0.0', port=port, server=GeventWebSocketServer)
 
