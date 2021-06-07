@@ -21,7 +21,7 @@ rate = "10M"
 min_sleep = "5"
 max_sleep = "30"
 rm_cache_dir = ""
-playlist = true
+playlist = True
 
 @get('/')
 def dl_queue_list():
@@ -202,9 +202,9 @@ if (data['RM_CACHE_DIR'] =='true' or data['RM_CACHE_DIR'] =='yes'):
 else:
     rm_cache_dir = ""
 if (data['PLAYLIST'] =='true' or data['PLAYLIST'] =='yes'):
-    playlist = true
+    playlist = True
 else:
-    playlist = false
+    playlist = False
 
 
 run(host='0.0.0.0', port=port, server=GeventWebSocketServer)
