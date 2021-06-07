@@ -143,7 +143,7 @@ def build_youtube_dl_cmd(url):
         cmd.extend(["-f", "bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", url[0]]
     else:
         resolution = url[2][:-1]
-        cmd.extend(["-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", url[0]]
+        cmd.extend(["-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", url[0]])
     print (" ".join(cmd))
     return cmd
 
