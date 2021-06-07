@@ -17,6 +17,10 @@ app = Bottle()
 
 port = 8080
 proxy = ""
+rate = "10M"
+min_sleep = "5"
+max_sleep = "30"
+rm_cache_dir = "--rm-cache-dir"
 
 @get('/')
 def dl_queue_list():
@@ -123,16 +127,17 @@ def dl_worker():
 
 
 def build_youtube_dl_cmd(url):
+    cmd = ["youtube-dl", "--proxy", proxy, rm_cache_dir, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f"]
     if (url[2] == "best"):
-        cmd = ["youtube-dl", "--proxy", proxy, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--exec", "touch {} && mv {} ./downfolder/", "--merge-output-format", "mp4", url[0]]
+        cmd.extend(["bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--exec", "touch {} && mv {} ./downfolder/", "--merge-output-format", "mp4", url[0]])
     # url[2] == "audio" for download_rest()
     elif (url[2] == "audio-m4a" or url[2] == "audio"):
-        cmd = ["youtube-dl", "--proxy", proxy, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f", "bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/", url[0]]
+        cmd.extend(["bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/", url[0]])
     elif (url[2] == "audio-mp3"):
-        cmd = ["youtube-dl", "--proxy", proxy, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f", "bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", "--exec", "touch {} && mv {} ./downfolder/", url[0]]
+        cmd.extend(["bestaudio[ext=m4a]", "-x", "--audio-format", "mp3", "--exec", "touch {} && mv {} ./downfolder/", url[0]]
     else:
         resolution = url[2][:-1]
-        cmd = ["youtube-dl", "--proxy", proxy, "-o", "./downfolder/.incomplete/%(title)s.%(ext)s", "-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/",  url[0]]
+        cmd.extend(["bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", "--exec", "touch {} && mv {} ./downfolder/",  url[0]]
     print (" ".join(cmd))
     return cmd
 
@@ -179,6 +184,16 @@ if (data['APP_PORT'] !=''):
     port = data['APP_PORT']
 if (data['PROXY'] !=''):
     proxy = data['PROXY']
+if (data['RATE'] !=''):
+    rate = data['RATE']
+if (data['MIN_SLEEP'] !=''):
+    min_sleep = data['MIN_SLEEP']
+if (data['MAX_SLEEP'] !=''):
+    max_sleep = data['MAX_SLEEP']
+if (data['RM_CACHE_DIR'] =='true' || data['RM_CACHE_DIR'] =='yes'):
+    rm_cache_dir = "--rm-cache-dir"
+else:
+    rm_cache_dir = ""
 
 run(host='0.0.0.0', port=port, server=GeventWebSocketServer)
 
