@@ -15,7 +15,7 @@ Changes in this version are mainly related to youtube-dl configuration through D
 * RM_CACHE_DIR - in case of download problems, you may want to clear cache before each download, set to 'true' or 'yes' to activate, default: 'false'
 * PLAYLIST - if set to 'yes' or 'true' files will be stored in subfolders named after playlist name or 'NA' if the files are not part of a playlist
 
-https://hub.docker.com/r/modenaf360/youtube-dl-nas/
+Docker image on Docker Hub: https://hub.docker.com/r/arhef/youtube-dl-nas
 
 - web server : [`bottle`](https://github.com/bottlepy/bottle) 
 - youtube-dl : [`youtube-dl`](https://github.com/rg3/youtube-dl).
