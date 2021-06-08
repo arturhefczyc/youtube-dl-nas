@@ -4,6 +4,8 @@
 FROM python:3-onbuild
 LABEL maintainer="https://github.com/arturhefczyc"
 
+ENV TZ="America/Los_Angeles"
+
 # Install ffmpeg.
 #https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository
 RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
