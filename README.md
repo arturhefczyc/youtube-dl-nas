@@ -9,12 +9,19 @@ This Queue server based on python3 and debian Linux.
 It is a modified versiob based on: https://github.com/hyeonsangjeon/youtube-dl-nas
 
 Changes in this version are mainly related to youtube-dl configuration through Docker ENV variables. Following new variables have been added:
-* RATE - set a custom max download rate, default: '10M'
-* MIN_SLEEP - minimum numbers of second to sleep between downloading next file, applies to playlist download, default: '5'
-* MAX_SLEEP - maximum numbers of seconds to sleep between downloading next file, applies to playlist download, default: '30'
-* RM_CACHE_DIR - in case of download problems, you may want to clear cache before each download, set to 'true' or 'yes' to activate, default: 'false'
-* PLAYLIST - if set to 'yes' or 'true' files will be stored in sub-folders named after playlist name or 'NA' if the files are not part of a playlist
-* SKIP_TEMP - if set to 'true' skips downloading content to temp folder and moving it to destination. Useful in connection with PLAYLIST as the playlist folders are not moved correctly.
+* RATE - set a custom max download rate, default: __'10M'__
+* MIN_SLEEP - minimum numbers of second to sleep between downloading next file, applies to playlist download, 
+  default: __'5'__
+* MAX_SLEEP - maximum numbers of seconds to sleep between downloading next file, applies to playlist download, 
+  default: __'30'__
+* RM_CACHE_DIR - in case of download problems, you may want to clear cache before each download, set to 'true' or 'yes' 
+  to activate, default: __'true'__
+* PLAYLIST - if set to 'yes' or 'true' files will be stored in sub-folders named after playlist name or 'NA' if the files
+  are not part of a playlist, default: __'true'__
+* SKIP_TEMP - if set to 'true' skips downloading content to temp folder and moving it to destination. It downloads files 
+  directly to the destination folder. Useful in connection with PLAYLIST as the playlist folders are not moved correctly.
+  Undesired side effect is that in the destination folders, there can be partial downloads which need cleaning.
+  default: __'true'__
 
 Docker image on Docker Hub: https://hub.docker.com/r/arhef/youtube-dl-nas
 

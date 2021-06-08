@@ -20,7 +20,7 @@ proxy = ""
 rate = "10M"
 min_sleep = "5"
 max_sleep = "30"
-rm_cache_dir = ""
+rm_cache_dir = "--rm-cache-dir"
 playlist = True
 skiptemp = True
 
@@ -204,19 +204,12 @@ if data['MIN_SLEEP'] != '':
     min_sleep = data['MIN_SLEEP']
 if data['MAX_SLEEP'] != '':
     max_sleep = data['MAX_SLEEP']
-if data['RM_CACHE_DIR'] == 'true' or data['RM_CACHE_DIR'] == 'yes':
-    rm_cache_dir = "--rm-cache-dir"
-else:
+if data['RM_CACHE_DIR'] == 'false' or data['RM_CACHE_DIR'] == 'no':
     rm_cache_dir = ""
-if data['PLAYLIST'] == 'true' or data['PLAYLIST'] == 'yes':
-    playlist = True
-else:
+if data['PLAYLIST'] == 'false' or data['PLAYLIST'] == 'no':
     playlist = False
-if data['SKIP_TEMP'] == 'true' or data['SKIP_TEMP'] == 'yes':
-    skiptemp = True
-else:
+if data['SKIP_TEMP'] == 'false' or data['SKIP_TEMP'] == 'no':
     skiptemp = False
-
 
 run(host='0.0.0.0', port=port, server=GeventWebSocketServer)
 
