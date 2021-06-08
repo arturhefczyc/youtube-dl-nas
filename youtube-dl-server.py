@@ -22,6 +22,7 @@ min_sleep = "5"
 max_sleep = "30"
 rm_cache_dir = ""
 playlist = True
+skiptemp = True
 
 @get('/')
 def dl_queue_list():
@@ -128,12 +129,15 @@ def dl_worker():
 
 
 def build_youtube_dl_cmd(url):
-    cmd = ["youtube-dl", "--proxy", proxy, rm_cache_dir, "--sleep-interval", min_sleep, "--max-sleep-interval", max_sleep, 
-           "--exec", "touch {} && mv {} ./downfolder/"]
-    if playlist:
-        cmd.extend(["-o", "./downfolder/.incomplete/%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s"])
+    cmd = ["youtube-dl", "--proxy", proxy, rm_cache_dir, "--sleep-interval", min_sleep, "--max-sleep-interval", max_sleep]
+    if skiptemp:
+        tmpdir = ""
     else:
-        cmd.extend(["-o", "./downfolder/.incomplete/%(title)s.%(ext)s"])
+        tmpdir = ".incomplete/"
+    if playlist:
+        cmd.extend(["-o", "./downfolder/"+tmpdir+"%(playlist)s/%(playlist_index)s - %(title)s.%(ext)s"])
+    else:
+        cmd.extend(["-o", "./downfolder/"+tmpdir+"%(title)s.%(ext)s"])
 
     if (url[2] == "best"):
         cmd.extend(["-f", "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]", "--merge-output-format", "mp4", url[0]])
@@ -144,6 +148,9 @@ def build_youtube_dl_cmd(url):
     else:
         resolution = url[2][:-1]
         cmd.extend(["-f", "bestvideo[height<="+resolution+"][ext=mp4]+bestaudio[ext=m4a]", url[0]])
+
+    if not skiptemp:
+        cmd.extend(["--exec", "touch {} && mv {} ./downfolder/"])
 
     print (" ".join(cmd))
     return cmd
@@ -205,6 +212,10 @@ if data['PLAYLIST'] == 'true' or data['PLAYLIST'] == 'yes':
     playlist = True
 else:
     playlist = False
+if data['SKIP_TEMP'] == 'true' or data['SKIP_TEMP'] == 'yes':
+    skiptemp = True
+else:
+    skiptemp = False
 
 
 run(host='0.0.0.0', port=port, server=GeventWebSocketServer)
