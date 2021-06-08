@@ -4,17 +4,17 @@
 FROM python:3-onbuild
 LABEL maintainer="https://github.com/arturhefczyc"
 
-ENV TZ="America/Los_Angeles"
-
 # Install ffmpeg.
 #https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository
 RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
 RUN echo "deb [check-valid-until=no] http://archive.debian.org/debian jessie-backports main" > /etc/apt/sources.list.d/jessie-backports.list
 RUN sed -i '/deb http:\/\/deb.debian.org\/debian jessie-updates main/d' /etc/apt/sources.list
 RUN apt-get -o Acquire::Check-Valid-Until=false update
-RUN apt-get install -y libav-tools vim dos2unix && \
+RUN apt-get install -y libav-tools vim dos2unix tzdata && \
     rm -rf /var/lib/apt/lists/*
 
+ENV TZ="America/Los_Angeles"
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 COPY /subber /usr/bin/subber 
 COPY /run.sh /
