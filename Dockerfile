@@ -17,12 +17,13 @@ RUN apt-get install -y libav-tools vim dos2unix && \
 COPY /subber /usr/bin/subber 
 COPY /run.sh /
 RUN chmod +x /usr/bin/subber && \
-     dos2unix /usr/bin/subber && \
-     ln -s /usr/src/app/downfolder / && \
-     chmod +x /run.sh && \
-     dos2unix /run.sh
+    dos2unix /usr/bin/subber && \
+    ln -s /usr/src/app/downfolder / && \
+    chmod +x /run.sh && \
+    dos2unix /run.sh
 
-RUN pip install -U youtube-dl
+RUN pip install --upgrade pip && \
+    pip install -U youtube-dl
 
 EXPOSE 8080
 
