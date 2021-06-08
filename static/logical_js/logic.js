@@ -71,7 +71,8 @@ $(function () {
             }
         });
 
-        $('#message').val('').focus();
+        $('#url').val('').focus();
+        //$('#message').val('').focus();
 
         return false;
     });
