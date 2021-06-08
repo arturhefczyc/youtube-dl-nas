@@ -4,6 +4,17 @@
 FROM python:3-onbuild
 LABEL maintainer="https://github.com/arturhefczyc"
 
+ENV MY_ID=""
+ENV MY_PW=""
+ENV APP_PORT="8080"
+ENV PROXY=""
+ENV RATE="10M"
+ENV MIN_SLEEP="5"
+ENV MAX_SLEEP="30"
+ENV RM_CACHE_DIR="true"
+ENV PLAYLIST="true"
+ENV SKIP_TEMP="true"
+
 # Install ffmpeg.
 #https://unix.stackexchange.com/questions/508724/failed-to-fetch-jessie-backports-repository
 RUN echo "deb [check-valid-until=no] http://cdn-fastly.deb.debian.org/debian jessie main" > /etc/apt/sources.list.d/jessie.list
