@@ -1,7 +1,7 @@
 version: 7
 imports:
 - projectName: Templates
-  tag: v27.0
+  tag: v31.0
 jobs:
 - name: Sync to GitHub
   steps:
@@ -16,6 +16,22 @@ jobs:
   triggers:
   - !BranchUpdateTrigger
     branches: master
+  retryCondition: never
+  maxRetries: 3
+  retryDelay: 30
+  cpuRequirement: 250m
+  memoryRequirement: 128m
+  timeout: 3600
+- name: Docker Build Push
+  steps:
+  - !CheckoutStep
+    name: checkout
+    cloneCredential: !DefaultCredential {}
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  - !UseTemplateStep
+    name: docker
+    templateName: Docker Build Upload
+    condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
