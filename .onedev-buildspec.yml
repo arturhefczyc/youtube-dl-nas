@@ -32,6 +32,9 @@ jobs:
     name: docker
     templateName: Docker Build Upload
     condition: ALL_PREVIOUS_STEPS_WERE_SUCCESSFUL
+  triggers:
+  - !BranchUpdateTrigger
+    branches: master
   retryCondition: never
   maxRetries: 3
   retryDelay: 30
