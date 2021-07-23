@@ -1,7 +1,8 @@
-version: 7
+version: 9
 imports:
 - projectName: Templates
   tag: v31.0
+  accessTokenSecret: templates_token
 jobs:
 - name: Sync to GitHub
   steps:
